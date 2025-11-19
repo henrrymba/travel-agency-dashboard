@@ -8,7 +8,7 @@ const MobileSidebar = () => {
     let sidebar: SidebarComponent;
 
     const toggleSidebar = () => {
-        sidebar.toggle();
+        sidebar.toggle()
     }
 
     return (
@@ -20,15 +20,12 @@ const MobileSidebar = () => {
                         alt="Logo"
                         className="size-[30px]"
                     />
+
                     <h1>Tourvisto</h1>
                 </Link>
 
                 <button onClick={toggleSidebar}>
-                    <img
-                        src="/assets/icons/menu.svg"
-                        alt="menu"
-                        className="size-7"
-                    />
+                    <img src="/assets/icons/menu.svg" alt="menu" className="size-7" />
                 </button>
             </header>
 
@@ -40,8 +37,7 @@ const MobileSidebar = () => {
                 showBackdrop={true}
                 type="over"
             >
-
-                <NavItems handleClick={toggleSidebar}/>
+                <NavItems handleClick={toggleSidebar} />
             </SidebarComponent>
         </div>
     )
