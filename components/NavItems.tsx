@@ -40,7 +40,7 @@ const NavItems = ({ handleClick }: { handleClick?: () => void}) => {
                 </nav>
 
                 <footer className="nav-footer">
-                    <img src={user?.imageUrl || '/assets/images/david.webp'} alt={user?.name || 'Henrry'} referrerPolicy="no-referrer" />
+                    <img src={user?.imageUrl || '/assets/images/david.webp'} alt={user?.name || 'David'} referrerPolicy="no-referrer" />
 
                     <article>
                         <h2>{user?.name}</h2>
