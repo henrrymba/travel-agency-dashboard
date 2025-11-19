@@ -29,7 +29,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         {
         "name": "A descriptive title for the trip",
         "description": "A brief description of the trip and its highlights not exceeding 100 words",
-        "estimatedPrice": "Lowest average price for the trip in USD, e.g.$price",
+        "estimatedPrice": "Lowest average price for the trip in EUR, e.g.price€",
         "duration": ${numberOfDays},
         "budget": "${budget}",
         "travelStyle": "${travelStyle}",
