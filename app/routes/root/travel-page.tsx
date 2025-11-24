@@ -5,8 +5,21 @@ import { Header, TripCard } from "../../../components";
 import { getAllTrips } from "~/appwrite/trips";
 import type { Route } from "../../../.react-router/types/app/routes/admin/+types/trips";
 import { useState } from "react";
-import { getUser } from "~/appwrite/auth";
+import { getCurrentUser } from "~/appwrite/auth";
 import { PagerComponent } from "@syncfusion/ej2-react-grids";
+
+// ... (keeping other imports if needed, but replace_file_content works on chunks)
+
+// I will target the specific lines.
+
+// Target 1: Import
+// Target 2: Loader usage
+// Target 3: Map types
+
+// Let's do it in one go if possible, or multiple calls.
+// The file content is small enough to do a few replaces.
+
+// Actually, I'll use multi_replace_file_content for this.
 
 const FeaturedDestination = ({
   containerClass = "",
@@ -71,15 +84,15 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const offset = (page - 1) * limit;
 
   const [user, { allTrips, total }] = await Promise.all([
-    getUser(),
+    getCurrentUser(),
     getAllTrips(limit, offset),
   ]);
 
   return {
-    trips: allTrips.map(({ $id, tripDetail, imageUrls }) => ({
-      id: $id,
-      ...parseTripData(tripDetail),
-      imageUrls: imageUrls ?? [],
+    trips: allTrips.map((trip: any) => ({
+      id: trip.$id,
+      ...parseTripData(trip.tripDetail),
+      imageUrls: trip.imageUrls ?? [],
     })),
     total,
   };

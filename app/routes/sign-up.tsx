@@ -1,16 +1,21 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { useAuth } from "~/context/AuthContext";
+import type { UserStatus } from "~/appwrite/auth";
 
-export default function SignIn() {
-  const { signIn, loading } = useAuth();
+export default function SignUp() {
+  const { signUp, loading } = useAuth();
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
+    status: "user" as UserStatus,
   });
   const [error, setError] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -18,9 +23,9 @@ export default function SignIn() {
     e.preventDefault();
     setError("");
     try {
-      await signIn(formData.email, formData.password);
+      await signUp(formData);
     } catch (err: any) {
-      setError(err.message || "Failed to sign in");
+      setError(err.message || "Failed to sign up");
     }
   };
 
@@ -29,11 +34,26 @@ export default function SignIn() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+            Create your account
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
+            <div className="mb-4">
+              <label htmlFor="name" className="sr-only">
+                Name
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Full Name"
+                value={formData.name}
+                onChange={handleChange}
+              />
+            </div>
             <div className="mb-4">
               <label htmlFor="email-address" className="sr-only">
                 Email address
@@ -44,7 +64,7 @@ export default function SignIn() {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
                 value={formData.email}
                 onChange={handleChange}
@@ -58,13 +78,28 @@ export default function SignIn() {
                 id="password"
                 name="password"
                 type="password"
-                autoComplete="current-password"
+                autoComplete="new-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
               />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="status" className="sr-only">
+                Account Type
+              </label>
+              <select
+                id="status"
+                name="status"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                value={formData.status}
+                onChange={handleChange}
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
             </div>
           </div>
 
@@ -76,17 +111,17 @@ export default function SignIn() {
               disabled={loading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
             >
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? "Signing up..." : "Sign up"}
             </button>
           </div>
           <div className="text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
+              Already have an account?{" "}
               <Link
-                to="/sign-up"
+                to="/sign-in"
                 className="font-medium text-indigo-600 hover:text-indigo-500"
               >
-                Sign up
+                Sign in
               </Link>
             </p>
           </div>

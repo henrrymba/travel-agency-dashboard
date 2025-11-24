@@ -1,103 +1,97 @@
-import { ID, OAuthProvider, Query } from "appwrite";
+import { ID, Query } from "appwrite";
 import { account, database, appwriteConfig } from "~/appwrite/client";
-import { redirect } from "react-router";
 
-export const getExistingUser = async (id: string) => {
+export type UserStatus = "admin" | "user";
+
+export interface NewUser {
+  name: string;
+  email: string;
+  password: string;
+  status: UserStatus;
+}
+
+export const signUp = async ({ name, email, password, status }: NewUser) => {
   try {
-    const { documents, total } = await database.listDocuments(
-      appwriteConfig.databaseId,
-      appwriteConfig.userCollectionId,
-      [Query.equal("accountId", id)]
-    );
-    return total > 0 ? documents[0] : null;
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    return null;
-  }
-};
+    // Step 1: Create user in Appwrite Auth
+    const newAccount = await account.create(ID.unique(), email, password, name);
+    if (!newAccount) throw new Error("Failed to create account");
 
-export const storeUserData = async () => {
-  try {
-    const user = await account.get();
-    if (!user) throw new Error("User not found");
-
-    const { providerAccessToken } = (await account.getSession("current")) || {};
-    const profilePicture = providerAccessToken
-      ? await getGooglePicture(providerAccessToken)
-      : null;
-
-    const createdUser = await database.createDocument(
+    // Step 2: Create user document in database
+    const newUser = await database.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
       ID.unique(),
       {
-        accountId: user.$id,
-        email: user.email,
-        name: user.name,
-        imageUrl: profilePicture,
+        accountId: newAccount.$id,
+        email: email,
+        name: name,
         joinedAt: new Date().toISOString(),
+        status: status,
+        imageUrl: "", // Optional, empty for now
       }
     );
 
-    if (!createdUser.$id) redirect("/sign-in");
+    // Step 3: Create session (auto-login)
+    await signIn(email, password);
+
+    return newUser;
   } catch (error) {
-    console.error("Error storing user data:", error);
+    console.error("Error in signUp:", error);
+    throw error;
   }
 };
 
-const getGooglePicture = async (accessToken: string) => {
+export const signIn = async (email: string, password: string) => {
   try {
-    const response = await fetch(
-      "https://people.googleapis.com/v1/people/me?personFields=photos",
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    );
-    if (!response.ok) throw new Error("Failed to fetch Google profile picture");
+    // Ensure no active session exists before creating a new one
+    try {
+      await account.deleteSession("current");
+    } catch (error) {
+      // Ignore error if no session exists or if it fails to delete
+      // console.log("No active session to delete or failed to delete");
+    }
 
-    const { photos } = await response.json();
-    return photos?.[0]?.url || null;
+    return await account.createEmailPasswordSession(email, password);
   } catch (error) {
-    console.error("Error fetching Google picture:", error);
-    return null;
+    console.error("Error in signIn:", error);
+    throw error;
   }
 };
 
-export const loginWithGoogle = async () => {
-  try {
-    account.createOAuth2Session(
-      OAuthProvider.Google,
-      `${window.location.origin}/`,
-      `${window.location.origin}/404`
-    );
-  } catch (error) {
-    console.error("Error during OAuth2 session creation:", error);
-  }
-};
-
-export const logoutUser = async () => {
+export const signOut = async () => {
   try {
     await account.deleteSession("current");
   } catch (error) {
-    console.error("Error during logout:", error);
+    console.error("Error in signOut:", error);
+    throw error;
   }
 };
 
-export const getUser = async () => {
+export const getCurrentUser = async () => {
   try {
-    const user = await account.get();
-    if (!user) return redirect("/sign-in");
+    const currentAccount = await account.get();
+    if (!currentAccount) return null;
 
     const { documents } = await database.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
-      [
-        Query.equal("accountId", user.$id),
-        Query.select(["name", "email", "imageUrl", "joinedAt", "accountId"]),
-      ]
+      [Query.equal("accountId", currentAccount.$id)]
     );
 
-    return documents.length > 0 ? documents[0] : redirect("/sign-in");
+    if (documents.length === 0) {
+      // Fallback if user exists in Auth but not in DB (shouldn't happen with correct flow)
+      return {
+        $id: "",
+        accountId: currentAccount.$id,
+        name: currentAccount.name,
+        email: currentAccount.email,
+        status: "user", // Default
+      };
+    }
+
+    return documents[0];
   } catch (error) {
-    console.error("Error fetching user:", error);
+    // console.error("Error getting current user:", error);
     return null;
   }
 };

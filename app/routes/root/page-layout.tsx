@@ -1,16 +1,14 @@
 import { Outlet, redirect, useNavigate } from "react-router";
-import { getExistingUser, logoutUser, storeUserData } from "~/appwrite/auth";
-import { account } from "~/appwrite/client";
+import { getCurrentUser } from "~/appwrite/auth";
 import RootNavbar from "../../../components/RootNavbar";
 
 export async function clientLoader() {
   try {
-    const user = await account.get();
+    const user = await getCurrentUser();
 
-    if (!user.$id) return redirect("/sign-in");
+    if (!user) return redirect("/sign-in");
 
-    const existingUser = await getExistingUser(user.$id);
-    return existingUser?.$id ? existingUser : await storeUserData();
+    return user;
   } catch (e) {
     console.log("Error fetching user", e);
     return redirect("/sign-in");
