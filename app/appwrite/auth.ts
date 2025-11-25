@@ -12,29 +12,31 @@ export interface NewUser {
 
 export const signUp = async ({ name, email, password, status }: NewUser) => {
   try {
-    // Step 1: Create user in Appwrite Auth
     const newAccount = await account.create(ID.unique(), email, password, name);
     if (!newAccount) throw new Error("Failed to create account");
 
-    // Step 2: Create user document in database
-    const newUser = await database.createDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.userCollectionId,
-      ID.unique(),
-      {
-        accountId: newAccount.$id,
-        email: email,
-        name: name,
-        joinedAt: new Date().toISOString(),
-        status: status,
-        imageUrl: "", // Optional, empty for now
-      }
-    );
-
-    // Step 3: Create session (auto-login)
     await signIn(email, password);
 
-    return newUser;
+    try {
+      const newUser = await database.createDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.userCollectionId,
+        ID.unique(),
+        {
+          accountId: newAccount.$id,
+          email: email,
+          name: name,
+          joinedAt: new Date().toISOString(),
+          status: status,
+          imageUrl: "",
+        }
+      );
+      return newUser;
+    } catch (dbError) {
+      console.error("Failed to create user document:", dbError);
+      await account.deleteSession("current");
+      throw dbError;
+    }
   } catch (error) {
     console.error("Error in signUp:", error);
     throw error;
@@ -47,8 +49,7 @@ export const signIn = async (email: string, password: string) => {
     try {
       await account.deleteSession("current");
     } catch (error) {
-      // Ignore error if no session exists or if it fails to delete
-      // console.log("No active session to delete or failed to delete");
+      console.log("No active session to delete or failed to delete");
     }
 
     return await account.createEmailPasswordSession(email, password);
@@ -79,7 +80,6 @@ export const getCurrentUser = async () => {
     );
 
     if (documents.length === 0) {
-      // Fallback if user exists in Auth but not in DB (shouldn't happen with correct flow)
       return {
         $id: "",
         accountId: currentAccount.$id,
@@ -91,7 +91,6 @@ export const getCurrentUser = async () => {
 
     return documents[0];
   } catch (error) {
-    // console.error("Error getting current user:", error);
     return null;
   }
 };

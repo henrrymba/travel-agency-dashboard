@@ -43,11 +43,18 @@ const NavItems = ({ handleClick }: { handleClick?: () => void }) => {
         </nav>
 
         <footer className="nav-footer">
-          <img
-            src={user?.imageUrl || "/assets/images/david.webp"}
-            alt={user?.name || "David"}
-            referrerPolicy="no-referrer"
-          />
+          {user?.imageUrl ? (
+            <img
+              src={user.imageUrl}
+              alt={user?.name || "User"}
+              className="size-10 rounded-full object-cover"
+              referrerPolicy="no-referrer"
+            />
+          ) : (
+            <div className="size-10 rounded-full bg-primary-500 flex items-center justify-center text-white font-bold text-lg">
+              {user?.name?.charAt(0).toUpperCase() || "U"}
+            </div>
+          )}
 
           <article>
             <h2>{user?.name}</h2>

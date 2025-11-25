@@ -1,5 +1,5 @@
 import type { AxisModel } from "@syncfusion/ej2-react-charts";
-import {formatDate} from "~/lib/utils";
+import { formatDate } from "~/lib/utils";
 
 export const sidebarItems = [
   {
@@ -124,16 +124,16 @@ export const tripyAxis: AxisModel = {
 };
 
 export const CONFETTI_SETTINGS = {
-  particleCount: 200, // Number of confetti pieces
-  spread: 60, // Spread of the confetti burst
-  colors: ["#ff0", "#ff7f00", "#ff0044", "#4c94f4", "#f4f4f4"], // Confetti colors
-  decay: 0.95, // Gravity decay of the confetti
+  particleCount: 200,
+  spread: 60,
+  colors: ["#ff0", "#ff7f00", "#ff0044", "#4c94f4", "#f4f4f4"],
+  decay: 0.95,
 };
 
 export const LEFT_CONFETTI = {
   ...CONFETTI_SETTINGS,
-  angle: 45, // Direction of the confetti burst (90 degrees is top)
-  origin: { x: 0, y: 1 }, // Center of the screen
+  angle: 45,
+  origin: { x: 0, y: 1 },
 };
 
 export const RIGHT_CONFETTI = {
@@ -142,23 +142,24 @@ export const RIGHT_CONFETTI = {
   origin: { x: 1, y: 1 },
 };
 
-export const user = { name: 'Henrry'};
+export const user = { name: "Henrry" };
 export const dashboardStats = {
   totalUsers: 12450,
   usersJoined: { currentMonth: 218, lastMonth: 176 },
   totalTrips: 3210,
-  tripsCreated: { currentMonth: 150, lastMonth: 250},
-  userRole: { total: 62, currentMonth: 25, lastMonth: 15},
-}
-export const allTrips = [{
-  id: 1,
-  name: "Ancient Ruins",
-  imageUrls: ["/assets/images/card-img-3.png"],
-  itinerary: [{ location: "Greece" }],
-  tags: ["Adventure", "Culture"],
-  travelStyle: "Solo",
-  estimatedPrice: "1,000€",
-},
+  tripsCreated: { currentMonth: 150, lastMonth: 250 },
+  userRole: { total: 62, currentMonth: 25, lastMonth: 15 },
+};
+export const allTrips = [
+  {
+    id: 1,
+    name: "Ancient Ruins",
+    imageUrls: ["/assets/images/card-img-3.png"],
+    itinerary: [{ location: "Greece" }],
+    tags: ["Adventure", "Culture"],
+    travelStyle: "Solo",
+    estimatedPrice: "1,000€",
+  },
   {
     id: 2,
     name: "Gondola Ride",

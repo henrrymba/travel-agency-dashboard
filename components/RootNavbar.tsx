@@ -47,11 +47,18 @@ const RootNavbar = () => {
             </Link>
           )}
 
-          <img
-            src={user?.imageUrl || "/assets/images/david.wepb"}
-            alt="user"
-            referrerPolicy="no-referrer"
-          />
+          {user?.imageUrl ? (
+            <img
+              src={user.imageUrl}
+              alt="user"
+              className="size-10 rounded-full object-cover"
+              referrerPolicy="no-referrer"
+            />
+          ) : (
+            <div className="size-10 rounded-full bg-primary-500 flex items-center justify-center text-white font-bold text-lg">
+              {user?.name?.charAt(0).toUpperCase() || "U"}
+            </div>
+          )}
 
           <button onClick={handleLogout} className="cursor-pointer">
             <img

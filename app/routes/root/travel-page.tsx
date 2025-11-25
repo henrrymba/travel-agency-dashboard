@@ -1,25 +1,12 @@
 import { Link, type LoaderFunctionArgs, useSearchParams } from "react-router";
-import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
+// import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { cn, parseTripData } from "~/lib/utils";
 import { Header, TripCard } from "../../../components";
 import { getAllTrips } from "~/appwrite/trips";
 import type { Route } from "../../../.react-router/types/app/routes/admin/+types/trips";
 import { useState } from "react";
 import { getCurrentUser } from "~/appwrite/auth";
-import { PagerComponent } from "@syncfusion/ej2-react-grids";
-
-// ... (keeping other imports if needed, but replace_file_content works on chunks)
-
-// I will target the specific lines.
-
-// Target 1: Import
-// Target 2: Loader usage
-// Target 3: Map types
-
-// Let's do it in one go if possible, or multiple calls.
-// The file content is small enough to do a few replaces.
-
-// Actually, I'll use multi_replace_file_content for this.
+// import { PagerComponent } from "@syncfusion/ej2-react-grids";
 
 const FeaturedDestination = ({
   containerClass = "",
@@ -128,12 +115,9 @@ const TravelPage = ({ loaderData }: Route.ComponentProps) => {
             </article>
 
             <Link to="#trips">
-              <ButtonComponent
-                type="button"
-                className="button-class !h-11 !w-full md:!w-[240px]"
-              >
+              <div className="button-class !h-11 !w-full md:!w-[240px] flex items-center justify-center bg-primary-500 rounded-md cursor-pointer hover:bg-primary-600 transition-colors">
                 <span className="p-16-semibold text-white">Get Started</span>
-              </ButtonComponent>
+              </div>
             </Link>
           </section>
         </div>
@@ -219,13 +203,30 @@ const TravelPage = ({ loaderData }: Route.ComponentProps) => {
           ))}
         </div>
 
-        <PagerComponent
+        {/* <PagerComponent
           totalRecordsCount={loaderData.total}
           pageSize={8}
           currentPage={currentPage}
           click={(args) => handlePageChange(args.currentPage)}
           cssClass="!mb-4"
-        />
+        /> */}
+        <div className="flex justify-center gap-4 mt-8">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage <= 1}
+            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="py-2">Page {currentPage}</span>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage * 8 >= loaderData.total}
+            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
       </section>
 
       <footer className="h-28 bg-white">

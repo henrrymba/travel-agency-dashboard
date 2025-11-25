@@ -227,12 +227,18 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
                   textAlign="Left"
                   template={(props: UserData) => (
                     <div className="flex items-center gap-1.5 px-4">
-                      <img
-                        src={props.imageUrl}
-                        alt="user"
-                        className="rounded-full size-8 aspect-square"
-                        referrerPolicy="no-referrer"
-                      />
+                      {props.imageUrl ? (
+                        <img
+                          src={props.imageUrl}
+                          alt="user"
+                          className="rounded-full size-8 aspect-square object-cover"
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <div className="size-8 rounded-full bg-primary-500 flex items-center justify-center text-white font-bold text-sm">
+                          {props.name?.charAt(0).toUpperCase() || "U"}
+                        </div>
+                      )}
                       <span>{props.name}</span>
                     </div>
                   )}

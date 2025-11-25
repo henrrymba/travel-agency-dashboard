@@ -77,10 +77,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       `https://api.unsplash.com/search/photos?query=${country} ${interests} ${travelStyle}&client_id=${unsplashApiKey}`
     );
 
-    let imageUrls: (string | null)[] = []; // Default to an empty array
+    let imageUrls: (string | null)[] = [];
     if (imageResponse.ok) {
       const imageData = await imageResponse.json();
-      // Check if imageData.results is an array before trying to slice it
       if (imageData && Array.isArray(imageData.results)) {
         imageUrls = imageData.results
           .slice(0, 3)
@@ -131,7 +130,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     // )
 
     return data({ id: result.$id });
-  } catch (e) {
+  } catch (e: any) {
     console.error("Error generating travel plan: ", e);
+    return data(
+      { error: "Failed to generate travel plan. Please check API key." },
+      { status: 500 }
+    );
   }
 };
