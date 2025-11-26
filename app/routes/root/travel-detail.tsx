@@ -199,13 +199,16 @@ const TravelDetail = ({ loaderData }: Route.ComponentProps) => {
             </section>
           ))}
 
-          <a href={paymentLink} className="flex">
+          <a href={paymentLink} className="flex flex-col items-center gap-2">
             <ButtonComponent className="button-class" type="submit">
               <span className="p-16-semibold text-white">
                 Pay to join the trip
               </span>
               <span className="price-pill">{estimatedPrice}</span>
             </ButtonComponent>
+            <p className="text-sm text-red-500 italic">
+              Please use fake data for payment as this is a Stripe test.
+            </p>
           </a>
         </section>
       </div>

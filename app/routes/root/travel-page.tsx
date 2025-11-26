@@ -1,12 +1,10 @@
 import { Link, type LoaderFunctionArgs, useSearchParams } from "react-router";
-// import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { cn, parseTripData } from "~/lib/utils";
 import { Header, TripCard } from "../../../components";
 import { getAllTrips } from "~/appwrite/trips";
 import type { Route } from "../../../.react-router/types/app/routes/admin/+types/trips";
 import { useState } from "react";
 import { getCurrentUser } from "~/appwrite/auth";
-// import { PagerComponent } from "@syncfusion/ej2-react-grids";
 
 const FeaturedDestination = ({
   containerClass = "",
@@ -203,13 +201,6 @@ const TravelPage = ({ loaderData }: Route.ComponentProps) => {
           ))}
         </div>
 
-        {/* <PagerComponent
-          totalRecordsCount={loaderData.total}
-          pageSize={8}
-          currentPage={currentPage}
-          click={(args) => handlePageChange(args.currentPage)}
-          cssClass="!mb-4"
-        /> */}
         <div className="flex justify-center gap-4 mt-8">
           <button
             onClick={() => handlePageChange(currentPage - 1)}

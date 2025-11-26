@@ -45,7 +45,6 @@ export const signUp = async ({ name, email, password, status }: NewUser) => {
 
 export const signIn = async (email: string, password: string) => {
   try {
-    // Ensure no active session exists before creating a new one
     try {
       await account.deleteSession("current");
     } catch (error) {
