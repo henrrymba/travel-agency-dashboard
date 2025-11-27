@@ -8,7 +8,7 @@ import {
 } from "@sentry/react-router";
 
 const sentryConfig: SentryReactRouterBuildOptions = {
-  org: "js-mastery-yx",
+  org: "js-mastery-fo0",
   project: "travel-agency",
   // An auth token is required for uploading source maps.
   authToken: process.env.SENTRY_AUTH_TOKEN,
