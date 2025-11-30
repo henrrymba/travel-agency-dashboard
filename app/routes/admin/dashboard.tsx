@@ -26,6 +26,7 @@ import {
 } from "@syncfusion/ej2-react-grids";
 import { tripXAxis, tripyAxis, userXAxis, useryAxis } from "~/constants";
 import { redirect } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export const clientLoader = async () => {
   const [
@@ -69,6 +70,7 @@ export const clientLoader = async () => {
 };
 
 const Dashboard = ({ loaderData }: Route.ComponentProps) => {
+  const { t, i18n } = useTranslation();
   const user = loaderData.user as User | null;
   const { dashboardStats, allTrips, userGrowth, tripsByTravelStyle, allUsers } =
     loaderData;
@@ -81,42 +83,44 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
 
   const usersAndTrips = [
     {
-      title: "Latest user signups",
+      title: t("dashboard.latestSignups"),
       dataSource: allUsers,
       field: "count",
-      headerText: "Trips created",
+      headerText: t("dashboard.tripsCreated"),
     },
     {
-      title: "Trips based on interests",
+      title: t("dashboard.tripsByInterests"),
       dataSource: trips,
       field: "interest",
-      headerText: "Interests",
+      headerText: t("dashboard.interests"),
     },
   ];
 
   return (
     <main className="dashboard wrapper">
       <Header
-        title={`Welcome ${user?.name ?? "Guest"} 👋`}
-        description="Track activity, trends and popular destinations in real time"
+        title={t("dashboard.welcome", {
+          name: user?.name ?? t("dashboard.guest"),
+        })}
+        description={t("dashboard.description")}
       />
 
       <section className="flex flex-col gap-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
           <StatsCard
-            headerTitle="Total Users"
+            headerTitle={t("dashboard.stats.totalUsers")}
             total={dashboardStats.totalUsers}
             currentMonthCount={dashboardStats.usersJoined.currentMonth}
             lastMonthCount={dashboardStats.usersJoined.lastMonth}
           />
           <StatsCard
-            headerTitle="Total Trips"
+            headerTitle={t("dashboard.stats.totalTrips")}
             total={dashboardStats.totalTrips}
             currentMonthCount={dashboardStats.tripsCreated.currentMonth}
             lastMonthCount={dashboardStats.tripsCreated.lastMonth}
           />
           <StatsCard
-            headerTitle="Active Users"
+            headerTitle={t("dashboard.stats.activeUsers")}
             total={dashboardStats.userRole.total}
             currentMonthCount={dashboardStats.userRole.currentMonth}
             lastMonthCount={dashboardStats.userRole.lastMonth}
@@ -124,7 +128,9 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
         </div>
       </section>
       <section className="container">
-        <h1 className="text-xl font-semibold text-dark-100">Created Trips</h1>
+        <h1 className="text-xl font-semibold text-dark-100">
+          {t("dashboard.createdTrips")}
+        </h1>
 
         <div className="trip-grid">
           {allTrips.map((trip: any) => (
@@ -144,9 +150,9 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <ChartComponent
           id="chart-1"
-          primaryXAxis={userXAxis}
-          primaryYAxis={useryAxis}
-          title="User Growth"
+          primaryXAxis={{ ...userXAxis, title: t("dashboard.charts.day") }}
+          primaryYAxis={{ ...useryAxis, title: t("dashboard.charts.count") }}
+          title={t("dashboard.charts.userGrowth")}
           tooltip={{ enable: true }}
         >
           <Inject
@@ -184,9 +190,12 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
 
         <ChartComponent
           id="chart-2"
-          primaryXAxis={tripXAxis}
-          primaryYAxis={tripyAxis}
-          title="Trip Trends"
+          primaryXAxis={{
+            ...tripXAxis,
+            title: t("dashboard.charts.travelStyles"),
+          }}
+          primaryYAxis={{ ...tripyAxis, title: t("dashboard.charts.count") }}
+          title={t("dashboard.charts.tripTrends")}
           tooltip={{ enable: true }}
         >
           <Inject
@@ -201,7 +210,13 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
 
           <SeriesCollectionDirective>
             <SeriesDirective
-              dataSource={tripsByTravelStyle}
+              dataSource={tripsByTravelStyle.map((item: any) => ({
+                ...item,
+                travelStyle: t(
+                  `dashboard.travelStyles.${item.travelStyle}`,
+                  item.travelStyle
+                ),
+              }))}
               xName="travelStyle"
               yName="count"
               type="Column"
@@ -218,11 +233,15 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
           <div key={i} className="flex flex-col gap-5">
             <h3 className="p-20-semibold text-dark-100">{title}</h3>
 
-            <GridComponent dataSource={dataSource} gridLines="None">
+            <GridComponent
+              dataSource={dataSource}
+              gridLines="None"
+              key={i18n.language}
+            >
               <ColumnsDirective>
                 <ColumnDirective
                   field="name"
-                  headerText="Name"
+                  headerText={t("allUsers.table.name")}
                   width="200"
                   textAlign="Left"
                   template={(props: UserData) => (

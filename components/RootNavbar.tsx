@@ -1,9 +1,12 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "./LanguageSwitcher";
 import { Link, useLocation, useNavigate, useParams } from "react-router";
 import { useAuth } from "~/context/AuthContext";
 import { cn } from "~/lib/utils";
 
 const RootNavbar = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();
@@ -36,6 +39,8 @@ const RootNavbar = () => {
         </Link>
 
         <aside>
+          {/* LanguageSwitcher */}
+          <LanguageSwitcher />
           {user.status === "admin" && (
             <Link
               to="/dashboard"
@@ -43,10 +48,9 @@ const RootNavbar = () => {
                 "text-dark-100": location.pathname.startsWith("/travel"),
               })}
             >
-              Admin Panel
+              {t("navbar.adminPanel")}
             </Link>
           )}
-
           {user?.imageUrl ? (
             <img
               src={user.imageUrl}
@@ -59,7 +63,6 @@ const RootNavbar = () => {
               {user?.name?.charAt(0).toUpperCase() || "U"}
             </div>
           )}
-
           <button onClick={handleLogout} className="cursor-pointer">
             <img
               src="/assets/icons/logout.svg"

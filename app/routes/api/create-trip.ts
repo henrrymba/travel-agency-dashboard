@@ -14,13 +14,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     budget,
     groupType,
     userId,
+    language,
   } = await request.json();
 
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
   const unsplashApiKey = process.env.UNSPLASH_ACCESS_KEY!;
 
   try {
-    const prompt = `Generate a ${numberOfDays}-day travel itinerary for ${country} based on the following user information:
+    let prompt = `Generate a ${numberOfDays}-day travel itinerary for ${country} based on the following user information:
         Budget: '${budget}'
         Interests: '${interests}'
         TravelStyle: '${travelStyle}'
@@ -67,6 +68,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         ]
     }`;
 
+    if (language?.startsWith("es")) {
+      prompt += " Generate the response in Spanish.";
+    }
+
     const textResult = await genAI
       .getGenerativeModel({ model: "gemini-2.0-flash" })
       .generateContent([prompt]);
@@ -111,8 +116,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     );
 
     const tripDetail = parseTripData(result.tripDetail) as Trip;
-    const tripPrice = parseInt(
-      tripDetail.estimatedPrice.replace(/[^0-9]/g, ""),
+    const tripPrice = Number.parseInt(
+      tripDetail.estimatedPrice.replace(/\D/g, ""),
       10
     );
     const paymentLink = await createProduct(

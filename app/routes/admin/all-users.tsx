@@ -1,4 +1,5 @@
 import { Header } from "../../../components";
+import { useTranslation } from "react-i18next";
 import {
   ColumnsDirective,
   ColumnDirective,
@@ -15,20 +16,21 @@ export const loader = async () => {
 };
 
 const AllUsers = ({ loaderData }: Route.ComponentProps) => {
+  const { t, i18n } = useTranslation();
   const { users } = loaderData;
 
   return (
     <main className="all-users wrapper">
       <Header
-        title="Manage Users"
-        description="Filter, sort, and access detailed user profiles"
+        title={t("allUsers.title")}
+        description={t("allUsers.description")}
       />
 
-      <GridComponent dataSource={users} gridLines="None">
+      <GridComponent dataSource={users} gridLines="None" key={i18n.language}>
         <ColumnsDirective>
           <ColumnDirective
             field="name"
-            headerText="Name"
+            headerText={t("allUsers.table.name")}
             width="200"
             textAlign="Left"
             template={(props: UserData) => (
@@ -51,13 +53,13 @@ const AllUsers = ({ loaderData }: Route.ComponentProps) => {
           />
           <ColumnDirective
             field="email"
-            headerText="Email Address"
+            headerText={t("allUsers.table.email")}
             width="200"
             textAlign="Left"
           />
           <ColumnDirective
             field="joinedAt"
-            headerText="Date Joined"
+            headerText={t("allUsers.table.dateJoined")}
             width="140"
             textAlign="Left"
             template={({ joinedAt }: { joinedAt: string }) =>
@@ -66,7 +68,7 @@ const AllUsers = ({ loaderData }: Route.ComponentProps) => {
           />
           <ColumnDirective
             field="status"
-            headerText="Type"
+            headerText={t("allUsers.table.type")}
             width="100"
             textAlign="Left"
             template={({ status }: UserData) => (

@@ -1,0 +1,171 @@
+{
+  "home": {
+    "hero": {
+      "title": "Plan Your Trip with Ease",
+      "description": "Customize your travel itinerary in minutes—pick your destination, set your preferences, and explore with confidence.",
+      "cta": "Get Started"
+    },
+    "featured": {
+      "title": "Featured Travel Destinations",
+      "description": "Check out some of the best places you visit around the world",
+      "cards": {
+        "barcelona": "Barcelona Tour",
+        "london": "London",
+        "australia": "Australia Tour",
+        "spain": "Spain Tour",
+        "japan": "Japan",
+        "italy": "Italy Tour",
+        "activities": "activities"
+      }
+    },
+    "handpicked": {
+      "title": "Handpicked Trips",
+      "description": "Browse well-planned trips designes for your travel style"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page"
+    },
+    "footer": {
+      "terms": "Terms & Conditions",
+      "privacy": "Privacy Policy"
+    }
+  },
+  "navbar": {
+    "adminPanel": "Admin Panel"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "allUsers": "All Users",
+    "aiTrips": "AI Trips"
+  },
+  "dashboard": {
+    "welcome": "Welcome {{name}} 👋",
+    "guest": "Guest",
+    "description": "Track activity, trends and popular destinations in real time",
+    "stats": {
+      "totalUsers": "Total Users",
+      "totalTrips": "Total Trips",
+      "activeUsers": "Active Users",
+      "vsLastMonth": "vs last month"
+    },
+    "createdTrips": "Created Trips",
+    "latestSignups": "Latest user signups",
+    "tripsByInterests": "Trips based on interests",
+    "tripsCreated": "Trips created",
+    "interests": "Interests",
+    "charts": {
+      "userGrowth": "User Growth",
+      "tripTrends": "Trip Trends",
+      "count": "Count",
+      "day": "Day",
+      "travelStyles": "Travel Styles"
+    },
+    "travelStyles": {
+      "Relaxed": "Relaxed",
+      "Luxury": "Luxury",
+      "Adventure": "Adventure",
+      "Cultural": "Cultural",
+      "Nature & Outdoors": "Nature & Outdoors",
+      "City Exploration": "City Exploration"
+    }
+  },
+  "allUsers": {
+    "title": "Manage Users",
+    "description": "Filter, sort, and access detailed user profiles",
+    "table": {
+      "name": "Name",
+      "email": "Email Address",
+      "dateJoined": "Date Joined",
+      "type": "Type"
+    }
+  },
+  "trips": {
+    "title": "Trips",
+    "description": "View and edit AI-generated travel plans",
+    "cta": "Create a trip",
+    "manageCreated": "Manage Created Trips",
+    "create": {
+      "title": "Add a New Trip",
+      "description": "View and edit AI Generated travel plans",
+      "form": {
+        "country": "Country",
+        "selectCountry": "Select a Country",
+        "duration": "Duration",
+        "enterDuration": "Enter a number of days",
+        "groupType": "Group Type",
+        "selectGroupType": "Select Group Type",
+        "travelStyle": "Travel Style",
+        "selectTravelStyle": "Select Travel Style",
+        "interest": "Interest",
+        "selectInterest": "Select Interest",
+        "budget": "Budget",
+        "selectBudget": "Select Budget",
+        "locationMap": "Location on the world map",
+        "generate": "Generate Trip",
+        "generating": "Generating..."
+      },
+      "options": {
+        "travelStyles": {
+          "Relaxed": "Relaxed",
+          "Luxury": "Luxury",
+          "Adventure": "Adventure",
+          "Cultural": "Cultural",
+          "Nature & Outdoors": "Nature & Outdoors",
+          "City Exploration": "City Exploration"
+        },
+        "interests": {
+          "Food & Culinary": "Food & Culinary",
+          "Historical Sites": "Historical Sites",
+          "Hiking & Nature Walks": "Hiking & Nature Walks",
+          "Beaches & Water Activities": "Beaches & Water Activities",
+          "Museums & Art": "Museums & Art",
+          "Nightlife & Bars": "Nightlife & Bars",
+          "Photography Spots": "Photography Spots",
+          "Shopping": "Shopping",
+          "Local Experiences": "Local Experiences"
+        },
+        "budget": {
+          "Budget": "Budget",
+          "Mid-range": "Mid-range",
+          "Luxury": "Luxury",
+          "Premium": "Premium"
+        },
+        "groupType": {
+          "Solo": "Solo",
+          "Couple": "Couple",
+          "Family": "Family",
+          "Friends": "Friends",
+          "Business": "Business"
+        }
+      },
+      "errors": {
+        "allFields": "Please provide values for all fields",
+        "durationRange": "Duration must be between 1 and 10 days",
+        "auth": "User not authenticated",
+        "failed": "Failed to generate a trip"
+      }
+    },
+    "details": {
+      "title": "Trip Details",
+      "description": "View and edit AI-generated travel plans",
+      "dayPlan": "{{count}} day plan",
+      "popular": "Popular Trips",
+      "bestTime": "Best Time to Visit:",
+      "weather": "Weather:",
+      "day": "Day",
+      "tripTitle": "{{duration}}-Day {{country}} {{travelStyle}} Trip",
+      "tripSubtitle": "{{budget}}, {{groupType}} and {{interests}}",
+      "payToJoin": "Pay to join the trip",
+      "paymentDisclaimer": "Please use fake data for payment as this is a Stripe test.",
+      "goBack": "Go back"
+    }
+  },
+  "success": {
+    "title": "Thank & Welcome Aboard!",
+    "message": "Your trip is booked - can't wait to have you on this adventure. Get ready to explore & make memories! ✨",
+    "viewDetails": "View trip details",
+    "returnHome": "Return to homepage"
+  }
+}

@@ -1,9 +1,12 @@
 import { Link, NavLink, useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "./LanguageSwitcher";
 import { sidebarItems } from "~/constants";
 import { cn } from "~/lib/utils";
 import { useAuth } from "~/context/AuthContext";
 
 const NavItems = ({ handleClick }: { handleClick?: () => void }) => {
+  const { t } = useTranslation();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -21,25 +24,33 @@ const NavItems = ({ handleClick }: { handleClick?: () => void }) => {
 
       <div className="container">
         <nav>
-          {sidebarItems.map(({ id, href, icon, label }) => (
-            <NavLink to={href} key={id}>
-              {({ isActive }: { isActive: boolean }) => (
-                <div
-                  className={cn("group nav-item", {
-                    "bg-primary-100 !text-white": isActive,
-                  })}
-                  onClick={handleClick}
-                >
-                  <img
-                    src={icon}
-                    alt={label}
-                    className={`group-hover:brightness-0 size-0 group-hover:invert ${isActive ? "brightness-0 invert" : "text-dark-200"}`}
-                  />
-                  {label}
-                </div>
-              )}
-            </NavLink>
-          ))}
+          {sidebarItems.map(({ id, href, icon, label }) => {
+            let translatedLabel = label;
+            if (label === "Dashboard") translatedLabel = t("sidebar.dashboard");
+            if (label === "All Users") translatedLabel = t("sidebar.allUsers");
+            if (label === "AI Trips") translatedLabel = t("sidebar.aiTrips");
+
+            return (
+              <NavLink to={href} key={id}>
+                {({ isActive }: { isActive: boolean }) => (
+                  <div
+                    className={cn("group nav-item", {
+                      "bg-primary-100 !text-white": isActive,
+                    })}
+                    onClick={handleClick}
+                  >
+                    <img
+                      src={icon}
+                      alt={translatedLabel}
+                      className={`group-hover:brightness-0 size-0 group-hover:invert ${isActive ? "brightness-0 invert" : "text-dark-200"}`}
+                    />
+                    {translatedLabel}
+                  </div>
+                )}
+              </NavLink>
+            );
+          })}
+          <LanguageSwitcher />
         </nav>
 
         <footer className="nav-footer">

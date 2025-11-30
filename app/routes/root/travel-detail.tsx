@@ -1,4 +1,5 @@
 import { Link, type LoaderFunctionArgs } from "react-router";
+import { useTranslation } from "react-i18next";
 import { getAllTrips, getTripById } from "~/appwrite/trips";
 import type { Route } from "./+types/travel-detail";
 import { cn, getFirstWord, parseTripData } from "~/lib/utils";
@@ -30,6 +31,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 };
 
 const TravelDetail = ({ loaderData }: Route.ComponentProps) => {
+  const { t } = useTranslation();
   const imageUrls = loaderData?.trip?.imageUrls || [];
   const tripData = parseTripData(loaderData?.trip?.tripDetail);
   const paymentLink = loaderData?.trip?.payment_link;
@@ -58,8 +60,8 @@ const TravelDetail = ({ loaderData }: Route.ComponentProps) => {
   ];
 
   const visitTimeAndWeatherInfo = [
-    { title: "Best Time to Visit:", items: bestTimeToVisit },
-    { title: "Weather:", items: weatherInfo },
+    { title: t("trips.details.bestTime"), items: bestTimeToVisit },
+    { title: t("trips.details.weather"), items: weatherInfo },
   ];
 
   return (
@@ -67,7 +69,7 @@ const TravelDetail = ({ loaderData }: Route.ComponentProps) => {
       <div className="travel-div">
         <Link to="/" className="back-link">
           <img src="/assets/icons/arrow-left.svg" alt="back icon" />
-          <span>Go back</span>
+          <span>{t("trips.details.goBack")}</span>
         </Link>
 
         <section className="container wrapper-md">
@@ -75,7 +77,7 @@ const TravelDetail = ({ loaderData }: Route.ComponentProps) => {
             <h1 className="p-40-semibold text-dark-100">{name}</h1>
             <div className="flex items-center gap-5">
               <InfoPill
-                text={`${duration} day plan`}
+                text={t("trips.details.dayPlan", { count: duration })}
                 image="/assets/icons/calendar.svg"
               />
 
@@ -148,10 +150,18 @@ const TravelDetail = ({ loaderData }: Route.ComponentProps) => {
           <section className="title">
             <article>
               <h3>
-                {duration}-Day {country} {travelStyle} Trip
+                {t("trips.details.tripTitle", {
+                  duration,
+                  country,
+                  travelStyle,
+                })}
               </h3>
               <p>
-                {budget}, {groupType} and {interests}
+                {t("trips.details.tripSubtitle", {
+                  budget,
+                  groupType,
+                  interests,
+                })}
               </p>
             </article>
 
@@ -166,7 +176,7 @@ const TravelDetail = ({ loaderData }: Route.ComponentProps) => {
             {itinerary?.map((dayPlan: DayPlan, index: number) => (
               <li key={index}>
                 <h3>
-                  Day {dayPlan.day}: {dayPlan.location}
+                  {t("trips.details.day")} {dayPlan.day}: {dayPlan.location}
                 </h3>
 
                 <ul>
@@ -202,19 +212,21 @@ const TravelDetail = ({ loaderData }: Route.ComponentProps) => {
           <a href={paymentLink} className="flex flex-col items-center gap-2">
             <ButtonComponent className="button-class" type="submit">
               <span className="p-16-semibold text-white">
-                Pay to join the trip
+                {t("trips.details.payToJoin")}
               </span>
               <span className="price-pill">{estimatedPrice}</span>
             </ButtonComponent>
             <p className="text-sm text-red-500 italic">
-              Please use fake data for payment as this is a Stripe test.
+              {t("trips.details.paymentDisclaimer")}
             </p>
           </a>
         </section>
       </div>
 
       <section className="flex flex-col gap-6">
-        <h2 className="p-24-semibold text-dark-100">Popular Trips</h2>
+        <h2 className="p-24-semibold text-dark-100">
+          {t("trips.details.popular")}
+        </h2>
 
         <div className="trip-grid">
           {allTrips.map((trip) => (

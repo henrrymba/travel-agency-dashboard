@@ -4,6 +4,7 @@ import { Header, TripCard } from "../../../components";
 import { getAllTrips } from "~/appwrite/trips";
 import type { Route } from "../../../.react-router/types/app/routes/admin/+types/trips";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getCurrentUser } from "~/appwrite/auth";
 
 const FeaturedDestination = ({
@@ -84,6 +85,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 const TravelPage = ({ loaderData }: Route.ComponentProps) => {
+  const { t } = useTranslation();
   const trips = loaderData.trips as Trip[] | [];
 
   const [searchParams] = useSearchParams();
@@ -103,18 +105,17 @@ const TravelPage = ({ loaderData }: Route.ComponentProps) => {
           <section className="wrapper">
             <article>
               <h1 className="p-72-bold text-dark-100">
-                Plan Your Trip with Ease
+                {t("home.hero.title")}
               </h1>
 
-              <p className="text-dark-100">
-                Customize your travel itinerary in minutes—pick your
-                destination, set your preferences, and explore with confidence.
-              </p>
+              <p className="text-dark-100">{t("home.hero.description")}</p>
             </article>
 
             <Link to="#trips">
               <div className="button-class !h-11 !w-full md:!w-[240px] flex items-center justify-center bg-primary-500 rounded-md cursor-pointer hover:bg-primary-600 transition-colors">
-                <span className="p-16-semibold text-white">Get Started</span>
+                <span className="p-16-semibold text-white">
+                  {t("home.hero.cta")}
+                </span>
               </div>
             </Link>
           </section>
@@ -123,8 +124,8 @@ const TravelPage = ({ loaderData }: Route.ComponentProps) => {
 
       <section className="pt-20 wrapper flex flex-col gap-10 h-full">
         <Header
-          title="Featured Travel Destinations"
-          description="Check out some of the best places you visit around the world"
+          title={t("home.featured.title")}
+          description={t("home.featured.description")}
         />
         <div className="featured">
           <article>
@@ -132,7 +133,7 @@ const TravelPage = ({ loaderData }: Route.ComponentProps) => {
               bgImage="bg-card-1"
               containerClass="h-1/3 lg:h-1/2"
               bigCard
-              title="Barcelona Tour"
+              title={t("home.featured.cards.barcelona")}
               rating={4.2}
               activityCount={196}
             />
@@ -141,14 +142,14 @@ const TravelPage = ({ loaderData }: Route.ComponentProps) => {
               <FeaturedDestination
                 bgImage="bg-card-2"
                 bigCard
-                title="London"
+                title={t("home.featured.cards.london")}
                 rating={4.5}
                 activityCount={512}
               />
               <FeaturedDestination
                 bgImage="bg-card-3"
                 bigCard
-                title="Australia Tour"
+                title={t("home.featured.cards.australia")}
                 rating={3.5}
                 activityCount={250}
               />
@@ -159,21 +160,21 @@ const TravelPage = ({ loaderData }: Route.ComponentProps) => {
             <FeaturedDestination
               containerClass="w-full h-[240px]"
               bgImage="bg-card-4"
-              title="Spain Tour"
+              title={t("home.featured.cards.spain")}
               rating={3.8}
               activityCount={150}
             />
             <FeaturedDestination
               containerClass="w-full h-[240px]"
               bgImage="bg-card-5"
-              title="Japan"
+              title={t("home.featured.cards.japan")}
               rating={5}
               activityCount={150}
             />
             <FeaturedDestination
               containerClass="w-full h-[240px]"
               bgImage="bg-card-6"
-              title="Italy Tour"
+              title={t("home.featured.cards.italy")}
               rating={4.2}
               activityCount={500}
             />
@@ -183,8 +184,8 @@ const TravelPage = ({ loaderData }: Route.ComponentProps) => {
 
       <section id="trips" className="py-20 wrapper flex flex-col gap-10">
         <Header
-          title="Handpicked Trips"
-          description="Browse well-planned trips designes for your travel style"
+          title={t("home.handpicked.title")}
+          description={t("home.handpicked.description")}
         />
 
         <div className="trip-grid">
@@ -207,15 +208,17 @@ const TravelPage = ({ loaderData }: Route.ComponentProps) => {
             disabled={currentPage <= 1}
             className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
           >
-            Previous
+            {t("home.pagination.previous")}
           </button>
-          <span className="py-2">Page {currentPage}</span>
+          <span className="py-2">
+            {t("home.pagination.page")} {currentPage}
+          </span>
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage * 8 >= loaderData.total}
             className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
           >
-            Next
+            {t("home.pagination.next")}
           </button>
         </div>
       </section>
@@ -232,11 +235,8 @@ const TravelPage = ({ loaderData }: Route.ComponentProps) => {
           </Link>
 
           <div>
-            {["Terms & Conditions", "Privacy Policy"].map((item) => (
-              <Link to="/" key={item}>
-                {item}
-              </Link>
-            ))}
+            <Link to="/">{t("home.footer.terms")}</Link>
+            <Link to="/">{t("home.footer.privacy")}</Link>
           </div>
         </div>
       </footer>
